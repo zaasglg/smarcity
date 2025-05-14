@@ -5,6 +5,7 @@ import 'package:smartcity/pages/chat_page.dart';
 import 'package:smartcity/pages/home_page.dart';
 import 'package:smartcity/pages/news_page.dart';
 import 'package:smartcity/pages/profile_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainNavigationPage extends StatefulWidget {
   const MainNavigationPage({super.key});
@@ -32,6 +33,8 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: _pages[_selectedIndex],
       bottomNavigationBar: Container(
@@ -52,13 +55,13 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
           showUnselectedLabels: false,
           enableFeedback: false,
           items: [
-            const BottomNavigationBarItem(
-              icon: Icon(HugeIcons.strokeRoundedHome03),
-              label: 'Главная',
+            BottomNavigationBarItem(
+              icon: const Icon(HugeIcons.strokeRoundedHome03),
+              label: l10n.home,
             ),
-            const BottomNavigationBarItem(
-              icon: Icon(HugeIcons.strokeRoundedNews01),
-              label: 'Новости',
+            BottomNavigationBarItem(
+              icon: const Icon(HugeIcons.strokeRoundedNews01),
+              label: l10n.news,
             ),
             BottomNavigationBarItem(
               icon: Container(
@@ -81,15 +84,15 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
                   size: 24,
                 ),
               ),
-              label: 'AI Помощник',
+              label: l10n.aiAssistant,
             ),
-            const BottomNavigationBarItem(
-              icon: Icon(HugeIcons.strokeRoundedBubbleChat),
-              label: 'Чат',
+            BottomNavigationBarItem(
+              icon: const Icon(HugeIcons.strokeRoundedBubbleChat),
+              label: l10n.chat,
             ),
-            const BottomNavigationBarItem(
-              icon: Icon(HugeIcons.strokeRoundedUser),
-              label: 'Профиль',
+            BottomNavigationBarItem(
+              icon: const Icon(HugeIcons.strokeRoundedUser),
+              label: l10n.profile,
             ),
           ],
         ),

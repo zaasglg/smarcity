@@ -1,0 +1,67 @@
+{
+  "appTitle": "Smart City",
+  "home": "Home",
+  "news": "News",
+  "aiAssistant": "AI Assistant",
+  "chat": "Chat",
+  "profile": "Profile",
+  "login": "Login",
+  "loginToAccount": "Login to your account",
+  "loginDescription": "To access your personal cabinet",
+  "app": "Application",
+  "aboutApp": "About the app",
+  "support": "Support",
+  "help": "Help",
+  "contactUs": "Contact us",
+  "language": "Language",
+  "russian": "Russian",
+  "kazakh": "Kazakh",
+  "settings": "Settings",
+  "utilities": "Utilities",
+  "volunteering": "Volunteering",
+  "marketplace": "Marketplace",
+  "queue": "Queue",
+  "feedback": "Feedback",
+  "financeTracker": "Finance Tracker",
+  "healthTracker": "Health Tracker",
+  "changeLanguage": "Change Language",
+
+  "cityMap": "City Map",
+  "madinaIsNearby": "Madina is nearby",
+  "livesInSamePlace": "lives in the same place",
+  "kyzylordaNews": "Kyzylorda News",
+  "services": "Services",
+  "scanner": "Scanner",
+
+  "newsTitle1": "New Akmechet park opened in Kyzylorda",
+  "newsContent1": "Today was the grand opening of a new recreation park with modern infrastructure",
+  "timeAgo1": "2 hours ago",
+
+  "newsTitle2": "Rice planting has begun in Kyzylorda region",
+  "newsContent2": "Farmers have started the sowing campaign. This year it is planned to sow more than 100 thousand hectares",
+  "timeAgo2": "5 hours ago",
+
+  "newsTitle3": "Silk Road festival is taking place in Kyzylorda",
+  "newsContent3": "The international festival gathered participants from 15 countries. The program includes: exhibitions, concerts and master classes",
+  "timeAgo3": "Yesterday",
+
+  "newsTitle4": "New bus route launched in Kyzylorda",
+  "newsContent4": "The new route will connect the city center with the new Akmechet district. The interval is 10 minutes",
+  "timeAgo4": "2 days ago",
+
+  "announcements": "Announcements",
+  "events": "Events",
+  "technology": "Technology",
+  "you": "You",
+  "addStory": "Add Story",
+  "likes": "likes",
+  "viewAllComments": "View all comments",
+  "likesCount": "{count} likes",
+  "@likesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
+}

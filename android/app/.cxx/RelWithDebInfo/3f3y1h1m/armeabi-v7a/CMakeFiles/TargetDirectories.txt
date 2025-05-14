@@ -1,0 +1,2 @@
+/Users/sayat/smarcity/android/app/.cxx/RelWithDebInfo/3f3y1h1m/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/sayat/smarcity/android/app/.cxx/RelWithDebInfo/3f3y1h1m/armeabi-v7a/CMakeFiles/rebuild_cache.dir

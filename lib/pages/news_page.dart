@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewsPage extends StatelessWidget {
   const NewsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -23,7 +26,7 @@ class NewsPage extends StatelessWidget {
           ),
           centerTitle: true,
           title: Text(
-            'Новости'.toUpperCase(),
+            l10n.news,
             style: const TextStyle(
               color: Colors.black87,
               fontSize: 15,
@@ -66,44 +69,38 @@ class NewsPage extends StatelessWidget {
                   fontWeight: FontWeight.normal,
                   fontSize: 14,
                 ),
-                tabs: const [
-                  Tab(text: 'Новости'),
-                  Tab(text: 'Объявления'),
-                  Tab(text: 'События'),
-                  Tab(text: 'Технологии'),
+                tabs: [
+                  Tab(text: l10n.news),
+                  Tab(text: l10n.announcements),
+                  Tab(text: l10n.events),
+                  Tab(text: l10n.technology),
                 ],
               ),
             ),
           ),
         ),
-        // ignore: prefer_const_constructors
-        body: Container(
-          child: const Column(
-            children: [
-              SizedBox(
-                height: 20.0,
+        body: Column(
+          children: [
+            const SizedBox(height: 20.0),
+            StoriesBar(l10n: l10n),
+            const SizedBox(height: 20.0),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  NewsTab(l10n: l10n),
+                  Center(
+                      child: Text(l10n.announcements,
+                          style: const TextStyle(fontSize: 18))),
+                  Center(
+                      child: Text(l10n.events,
+                          style: const TextStyle(fontSize: 18))),
+                  Center(
+                      child: Text(l10n.technology,
+                          style: const TextStyle(fontSize: 18))),
+                ],
               ),
-              _StoriesBar(),
-              SizedBox(
-                height: 20.0,
-              ),
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    NewsTab(),
-                    Center(
-                        child:
-                            Text('Объявления', style: TextStyle(fontSize: 18))),
-                    Center(
-                        child: Text('События', style: TextStyle(fontSize: 18))),
-                    Center(
-                        child:
-                            Text('Технологии', style: TextStyle(fontSize: 18))),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -111,32 +108,36 @@ class NewsPage extends StatelessWidget {
 }
 
 class NewsTab extends StatelessWidget {
-  const NewsTab({super.key});
+  final AppLocalizations l10n;
+
+  const NewsTab({super.key, required this.l10n});
 
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: const [
+      children: [
         NewsCard(
+          l10n: l10n,
           avatarUrl: 'assets/icons/guest.png',
           userName: 'Мадина',
-          timeAgo: '3 минуты назад',
-          text:
-              'Извините, у нас в Плерете всю ночь отключали электричество, что происходит?',
-          imageUrls: [
+          timeAgo: l10n.timeAgo1,
+          text: l10n.newsContent1,
+          imageUrls: const [
             'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
             'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
           ],
+          likesCount: 2,
         ),
         NewsCard(
+          l10n: l10n,
           avatarUrl: 'assets/icons/guest.png',
           userName: 'Саят',
-          timeAgo: '5 минут назад',
-          text:
-              'Ребята, посмотрите в эти выходные сериал "Сверхъестественное", очень рекомендую!',
-          imageUrls: [
+          timeAgo: l10n.timeAgo2,
+          text: l10n.newsContent2,
+          imageUrls: const [
             'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
           ],
+          likesCount: 5,
         ),
       ],
     );
@@ -144,19 +145,23 @@ class NewsTab extends StatelessWidget {
 }
 
 class NewsCard extends StatelessWidget {
+  final AppLocalizations l10n;
   final String avatarUrl;
   final String userName;
   final String timeAgo;
   final String text;
   final List<String> imageUrls;
+  final int likesCount;
 
   const NewsCard({
     super.key,
+    required this.l10n,
     required this.avatarUrl,
     required this.userName,
     required this.timeAgo,
     required this.text,
     required this.imageUrls,
+    required this.likesCount,
   });
 
   @override
@@ -254,7 +259,7 @@ class NewsCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '2 отметок "Нравится"',
+                  '${likesCount.toString()} ${l10n.likes}',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -279,7 +284,7 @@ class NewsCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Посмотреть все 0 комментариев',
+                  l10n.viewAllComments,
                   style: TextStyle(
                     color: Colors.grey.shade600,
                     fontSize: 13,
@@ -294,10 +299,10 @@ class NewsCard extends StatelessWidget {
   }
 }
 
-class _ActionButton extends StatelessWidget {
+class ActionButton extends StatelessWidget {
   final IconData icon;
   final String label;
-  const _ActionButton({required this.icon, required this.label});
+  const ActionButton({super.key, required this.icon, required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -318,13 +323,15 @@ class _ActionButton extends StatelessWidget {
   }
 }
 
-class _StoriesBar extends StatelessWidget {
-  const _StoriesBar({Key? key}) : super(key: key);
+class StoriesBar extends StatelessWidget {
+  final AppLocalizations l10n;
+
+  const StoriesBar({super.key, required this.l10n});
 
   @override
   Widget build(BuildContext context) {
     final stories = [
-      {'name': 'You', 'isAdd': true},
+      {'name': l10n.you, 'isAdd': true},
       {
         'name': 'Kristin',
         'avatar': 'https://randomuser.me/api/portraits/women/2.jpg',
@@ -411,7 +418,8 @@ class _StoriesBar extends StatelessWidget {
                   showDialog(
                     context: context,
                     barrierColor: Colors.black.withOpacity(0.95),
-                    builder: (_) => _StoryViewer(
+                    builder: (_) => StoryViewer(
+                      l10n: l10n,
                       user: story,
                     ),
                   );
@@ -469,15 +477,17 @@ class _StoriesBar extends StatelessWidget {
   }
 }
 
-class _StoryViewer extends StatefulWidget {
+class StoryViewer extends StatefulWidget {
+  final AppLocalizations l10n;
   final Map<String, Object> user;
-  const _StoryViewer({required this.user, Key? key}) : super(key: key);
+
+  const StoryViewer({required this.l10n, required this.user, super.key});
 
   @override
-  State<_StoryViewer> createState() => _StoryViewerState();
+  State<StoryViewer> createState() => StoryViewerState();
 }
 
-class _StoryViewerState extends State<_StoryViewer>
+class StoryViewerState extends State<StoryViewer>
     with SingleTickerProviderStateMixin {
   late PageController _controller;
   late int _currentIndex;
@@ -495,20 +505,20 @@ class _StoryViewerState extends State<_StoryViewer>
       vsync: this,
       duration: const Duration(seconds: 5),
     )..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          if (_currentIndex < storyItems.length - 1) {
-            setState(() {
-              _currentIndex++;
-              _controller.animateToPage(_currentIndex,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut);
-              _progressController.forward(from: 0);
-            });
-          } else {
-            Navigator.of(context).pop();
-          }
+      if (status == AnimationStatus.completed) {
+        if (_currentIndex < storyItems.length - 1) {
+          setState(() {
+            _currentIndex++;
+            _controller.animateToPage(_currentIndex,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut);
+            _progressController.forward(from: 0);
+          });
+        } else {
+          Navigator.of(context).pop();
         }
-      });
+      }
+    });
     _progressController.forward();
   }
 
@@ -553,7 +563,7 @@ class _StoryViewerState extends State<_StoryViewer>
                 // Прогресс-бар
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: Row(
                     children: List.generate(storyItems.length, (i) {
                       return Expanded(
@@ -563,8 +573,8 @@ class _StoryViewerState extends State<_StoryViewer>
                             value: i < _currentIndex
                                 ? 1
                                 : i == _currentIndex
-                                    ? _progressController.value
-                                    : 0,
+                                ? _progressController.value
+                                : 0,
                             backgroundColor: Colors.white24,
                             valueColor: const AlwaysStoppedAnimation<Color>(
                                 Colors.white),
@@ -578,7 +588,7 @@ class _StoryViewerState extends State<_StoryViewer>
                 // Верхние иконки
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

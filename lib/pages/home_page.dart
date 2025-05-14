@@ -8,12 +8,16 @@ import 'package:smartcity/pages/marketplace_page.dart';
 import 'package:smartcity/pages/queue_page.dart';
 import 'package:smartcity/pages/utilities_page.dart';
 import 'package:smartcity/pages/volunteering_page.dart';
+import 'package:smartcity/pages/chat_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -27,12 +31,12 @@ class HomePage extends StatelessWidget {
         ),
         leading: IconButton(
           icon:
-              const Icon(HugeIcons.strokeRoundedMenu09, color: Colors.black87),
+          const Icon(HugeIcons.strokeRoundedMenu09, color: Colors.black87),
           onPressed: () {},
         ),
         centerTitle: true,
         title: Text(
-          'Главная'.toUpperCase(),
+          l10n.home.toUpperCase(),
           style: const TextStyle(
             color: Colors.black87,
             fontSize: 15,
@@ -89,9 +93,9 @@ class HomePage extends StatelessWidget {
                             color: const Color(0xFFE95A7B),
                             borderRadius: BorderRadius.circular(24),
                           ),
-                          child: const Text(
-                            'Карта города',
-                            style: TextStyle(
+                          child: Text(
+                            l10n.cityMap,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -112,31 +116,32 @@ class HomePage extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: const Row(
+              child: Row(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     backgroundImage: NetworkImage(
                         'https://randomuser.me/api/portraits/women/1.jpg'),
                     radius: 18,
                   ),
-                  SizedBox(width: 4),
-                  CircleAvatar(
+                  const SizedBox(width: 4),
+                  const CircleAvatar(
                     backgroundImage: NetworkImage(
                         'https://randomuser.me/api/portraits/men/2.jpg'),
                     radius: 18,
                   ),
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Мадина рядом',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          l10n.madinaIsNearby,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          'живет в том же месте',
-                          style: TextStyle(color: Colors.grey, fontSize: 13),
+                          l10n.livesInSamePlace,
+                          style:
+                          const TextStyle(color: Colors.grey, fontSize: 13),
                         ),
                       ],
                     ),
@@ -146,19 +151,20 @@ class HomePage extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             // Weather widget
-            _WeatherCard(),
+            _buildWeatherCard(),
             const SizedBox(height: 28),
             // News section
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Новости Кызылорды',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    l10n.kyzylordaNews,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 18),
                   ),
-                  Icon(HugeIcons.strokeRoundedMoreHorizontalCircle01,
+                  const Icon(HugeIcons.strokeRoundedMoreHorizontalCircle01,
                       color: Colors.grey),
                 ],
               ),
@@ -167,30 +173,30 @@ class HomePage extends StatelessWidget {
             Column(
               children: [
                 _buildNewsItem(
-                  'В Кызылорде открылся новый парк "Акмечеть"',
-                  'Сегодня состоялось торжественное открытие нового парка отдыха с современной инфраструктурой',
-                  '2 часа назад',
+                  l10n.newsTitle1,
+                  l10n.newsContent1,
+                  l10n.timeAgo1,
                   'https://images.unsplash.com/photo-1519832979-6fa011b87667?auto=format&fit=crop&w=80&q=80',
                 ),
                 const SizedBox(height: 12),
                 _buildNewsItem(
-                  'В Кызылординской области начался сев риса',
-                  'Аграрии приступили к посевной кампании. В этом году планируется засеять более 100 тысяч гектаров',
-                  '5 часов назад',
+                  l10n.newsTitle2,
+                  l10n.newsContent2,
+                  l10n.timeAgo2,
                   'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=80&q=80',
                 ),
                 const SizedBox(height: 12),
                 _buildNewsItem(
-                  'В Кызылорде проходит фестиваль "Шелковый путь"',
-                  'Международный фестиваль собрал участников из 15 стран. В программе: выставки, концерты и мастер-классы',
-                  'Вчера',
+                  l10n.newsTitle3,
+                  l10n.newsContent3,
+                  l10n.timeAgo3,
                   'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=80&q=80',
                 ),
                 const SizedBox(height: 12),
                 _buildNewsItem(
-                  'В Кызылорде запустили новый автобусный маршрут',
-                  'Новый маршрут свяжет центр города с новым микрорайоном "Акмечеть". Интервал движения - 10 минут',
-                  '2 дня назад',
+                  l10n.newsTitle4,
+                  l10n.newsContent4,
+                  l10n.timeAgo4,
                   'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=80&q=80',
                 ),
               ],
@@ -199,14 +205,15 @@ class HomePage extends StatelessWidget {
             // Categories section
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Сервисы',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    l10n.services,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 18),
                   ),
-                  Icon(HugeIcons.strokeRoundedMoreHorizontalCircle01,
+                  const Icon(HugeIcons.strokeRoundedMoreHorizontalCircle01,
                       color: Colors.grey),
                 ],
               ),
@@ -221,7 +228,7 @@ class HomePage extends StatelessWidget {
               childAspectRatio: 3.5,
               children: [
                 _buildCategoryItem(
-                  'Обратная связь от граждан',
+                  l10n.feedback,
                   HugeIcons.strokeRoundedBubbleChat,
                   const Color(0xFF4CAF50),
                   onTap: () {
@@ -234,7 +241,7 @@ class HomePage extends StatelessWidget {
                   },
                 ),
                 _buildCategoryItem(
-                  'Очереди в госучреждениях',
+                  l10n.queue,
                   HugeIcons.strokeRoundedUser,
                   const Color(0xFF2196F3),
                   onTap: () {
@@ -247,7 +254,7 @@ class HomePage extends StatelessWidget {
                   },
                 ),
                 _buildCategoryItem(
-                  'График и оповещения ЖКХ',
+                  l10n.utilities,
                   HugeIcons.strokeRoundedHome03,
                   const Color(0xFFFF9800),
                   onTap: () {
@@ -260,7 +267,7 @@ class HomePage extends StatelessWidget {
                   },
                 ),
                 _buildCategoryItem(
-                  'Трекер здоровья',
+                  l10n.healthTracker,
                   HugeIcons.strokeRoundedNotification03,
                   const Color(0xFFE91E63),
                   onTap: () {
@@ -273,7 +280,7 @@ class HomePage extends StatelessWidget {
                   },
                 ),
                 _buildCategoryItem(
-                  'Финансовый трекер',
+                  l10n.financeTracker,
                   HugeIcons.strokeRoundedMenu09,
                   const Color(0xFF9C27B0),
                   onTap: () {
@@ -286,7 +293,7 @@ class HomePage extends StatelessWidget {
                   },
                 ),
                 _buildCategoryItem(
-                  'Маркетплейс',
+                  l10n.marketplace,
                   HugeIcons.strokeRoundedNews01,
                   const Color(0xFF00BCD4),
                   onTap: () {
@@ -299,12 +306,20 @@ class HomePage extends StatelessWidget {
                   },
                 ),
                 _buildCategoryItem(
-                  'Сканер',
+                  l10n.scanner,
                   HugeIcons.strokeRoundedMoreHorizontalCircle01,
                   const Color(0xFF795548),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ChatScreen(),
+                      ),
+                    );
+                  },
                 ),
                 _buildCategoryItem(
-                  'Волонтёрство',
+                  l10n.volunteering,
                   HugeIcons.strokeRoundedBubbleChat,
                   const Color(0xFF607D8B),
                   onTap: () {
@@ -470,8 +485,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // ignore: non_constant_identifier_names
-  Widget _WeatherCard() {
+  Widget _buildWeatherCard() {
     return Container(
       height: 110,
       decoration: BoxDecoration(

@@ -14,7 +14,7 @@ class _QueuePageState extends State<QueuePage> {
     {
       'name': 'АвтоЦОН',
       'icon': HugeIcons.strokeRoundedMenu09,
-      'color': Color(0xFF1E3A8A),
+      'color': Color(0xFFDB5B2B),
     },
     {
       'name': 'ЦОН',
@@ -56,7 +56,7 @@ class _QueuePageState extends State<QueuePage> {
 
   @override
   Widget build(BuildContext context) {
-    const mainBlue = Color(0xFF1E3A8A);
+    const mainBlue = Color(0xFFDB5B2B);
     return Scaffold(
       backgroundColor: const Color(0xFFF7F9FB),
       appBar: AppBar(
@@ -207,7 +207,7 @@ class _QueuePageState extends State<QueuePage> {
                   duration: const Duration(milliseconds: 200),
                   width: 72,
                   decoration: BoxDecoration(
-                    color: isSelected ? Color(0xFF1E3A8A) : Colors.white,
+                    color: isSelected ? Color(0xFFDB5B2B) : Colors.white,
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: isSelected
                         ? [
@@ -219,7 +219,7 @@ class _QueuePageState extends State<QueuePage> {
                         : [],
                     border: Border.all(
                         color: isSelected
-                            ? Color(0xFF1E3A8A)
+                            ? Color(0xFFDB5B2B)
                             : Colors.grey.shade100,
                         width: 2),
                   ),
@@ -265,7 +265,7 @@ class _QueuePageState extends State<QueuePage> {
                 ? () => setState(() => _selectedTimeIndex = null)
                 : null,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF1E3A8A),
+              backgroundColor: Color(0xFFDB5B2B),
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 18),
               shape: RoundedRectangleBorder(

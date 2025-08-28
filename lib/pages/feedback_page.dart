@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
+import '../services/db_service.dart' as db;
+import '../services/auth_service.dart';
 import 'dart:math';
 
 class FeedbackPage extends StatefulWidget {
@@ -11,12 +13,14 @@ class FeedbackPage extends StatefulWidget {
 
 class _FeedbackPageState extends State<FeedbackPage>
     with SingleTickerProviderStateMixin {
-  final List<Map<String, dynamic>> _myFeedbacks = [];
+  final List<db.Feedback> _myFeedbacks = [];
   final TextEditingController _controller = TextEditingController();
   bool _isSending = false;
+  bool _isLoading = true;
   String? _successMessage;
   late AnimationController _animController;
   late Animation<double> _fadeAnim;
+  db.User? _currentUser;
 
   @override
   void initState() {
@@ -29,6 +33,32 @@ class _FeedbackPageState extends State<FeedbackPage>
       parent: _animController,
       curve: Curves.easeInOut,
     );
+    _loadUserAndFeedback();
+  }
+  
+  Future<void> _loadUserAndFeedback() async {
+    setState(() => _isLoading = true);
+    
+    try {
+      // Load current user
+      _currentUser = await AuthService.loadUser();
+      
+      if (_currentUser != null) {
+        // Load feedback for this user
+        final dbService = db.DBService();
+        final feedbacks = await dbService.getFeedbackByUserId(_currentUser!.id!);
+        
+        setState(() {
+          _myFeedbacks.clear();
+          _myFeedbacks.addAll(feedbacks);
+        });
+      }
+    } catch (e) {
+      print('Error loading feedback: $e');
+      // Show error if needed
+    } finally {
+      setState(() => _isLoading = false);
+    }
   }
 
   @override
@@ -38,10 +68,10 @@ class _FeedbackPageState extends State<FeedbackPage>
     super.dispose();
   }
 
-  void _showFeedbackForm() {
+  void _showFeedbackForm() async {
     _controller.clear();
     _successMessage = null;
-    showModalBottomSheet(
+    await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
@@ -54,33 +84,66 @@ class _FeedbackPageState extends State<FeedbackPage>
         );
       },
     );
+    
+    // Refresh feedback list after form is closed
+    _loadUserAndFeedback();
   }
 
   void _sendFeedback() async {
     if (_controller.text.trim().isEmpty) return;
+    
+    // Make sure we have a user
+    if (_currentUser == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Необходимо авторизоваться для отправки обращения')),
+      );
+      return;
+    }
+    
     setState(() {
       _isSending = true;
       _successMessage = null;
     });
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      _isSending = false;
-      _successMessage = 'Спасибо за ваш отзыв!';
-      _myFeedbacks.insert(0, {
-        'text': _controller.text.trim(),
-        'date': DateTime.now(),
-        'status': Random().nextBool() ? 'Рассматривается' : 'Выполнено',
+    
+    try {
+      final status = Random().nextBool() ? 'Рассматривается' : 'Выполнено';
+      
+      // Create feedback object
+      final newFeedback = db.Feedback(
+        userId: _currentUser!.id!,
+        text: _controller.text.trim(),
+        date: DateTime.now(),
+        status: status,
+      );
+      
+      // Save to database
+      final dbService = db.DBService();
+      await dbService.insertFeedback(newFeedback);
+      
+      setState(() {
+        _isSending = false;
+        _successMessage = 'Спасибо за ваш отзыв!';
+        _myFeedbacks.insert(0, newFeedback);
+        _controller.clear();
       });
-      _controller.clear();
-    });
-    _animController.forward(from: 0);
-    Future.delayed(const Duration(milliseconds: 1200), () {
-      if (mounted) Navigator.of(context).pop();
-    });
+      
+      _animController.forward(from: 0);
+      Future.delayed(const Duration(milliseconds: 1200), () {
+        if (mounted) Navigator.of(context).pop();
+      });
+    } catch (e) {
+      print('Error saving feedback: $e');
+      setState(() {
+        _isSending = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Ошибка при отправке обращения')),
+      );
+    }
   }
 
   Widget _buildFeedbackForm() {
-    const mainBlue = Color(0xFF1E3A8A);
+    const mainBlue = Color(0xFFDB5B2B);
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -199,7 +262,7 @@ class _FeedbackPageState extends State<FeedbackPage>
 
   @override
   Widget build(BuildContext context) {
-    const mainBlue = Color(0xFF1E3A8A);
+    const mainBlue = Color(0xFFDB5B2B);
     return Scaffold(
       backgroundColor: const Color(0xFFF6F8FA),
       body: Column(
@@ -210,7 +273,7 @@ class _FeedbackPageState extends State<FeedbackPage>
             padding: const EdgeInsets.only(top: 48, bottom: 24),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFF1E3A8A), Color(0xFF3B5998)],
+                colors: [Color(0xFFDB5B2B), Color(0xFFE87C4E)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -296,90 +359,100 @@ class _FeedbackPageState extends State<FeedbackPage>
           ),
           // Список обращений
           Expanded(
-            child: _myFeedbacks.isEmpty
+            child: _isLoading
                 ? Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 48),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(HugeIcons.strokeRoundedBubbleChat,
-                              size: 60, color: Colors.grey[300]),
-                          const SizedBox(height: 18),
-                          const Text(
-                            'У вас пока нет обращений',
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(mainBlue),
                     ),
                   )
-                : ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(24, 32, 24, 32),
-                    itemCount: _myFeedbacks.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 16),
-                    itemBuilder: (context, i) {
-                      final fb = _myFeedbacks[i];
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(18),
-                          boxShadow: [
-                            BoxShadow(
-                              color: mainBlue.withOpacity(0.06),
-                              blurRadius: 16,
-                              offset: const Offset(0, 6),
-                            ),
-                          ],
+                : _myFeedbacks.isEmpty
+                    ? Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 48),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(HugeIcons.strokeRoundedBubbleChat,
+                                  size: 60, color: Colors.grey[300]),
+                              const SizedBox(height: 18),
+                              const Text(
+                                'У вас пока нет обращений',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
                         ),
-                        padding: const EdgeInsets.all(18),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  fb['status'] == 'Выполнено'
-                                      ? Icons.check_circle
-                                      : Icons.timelapse,
-                                  color: fb['status'] == 'Выполнено'
-                                      ? mainBlue
-                                      : Colors.orange,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  fb['status'],
-                                  style: TextStyle(
-                                    color: fb['status'] == 'Выполнено'
-                                        ? mainBlue
-                                        : Colors.orange,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
+                      )
+                    : RefreshIndicator(
+                        onRefresh: _loadUserAndFeedback,
+                        color: mainBlue,
+                        child: ListView.separated(
+                          padding: const EdgeInsets.fromLTRB(24, 32, 24, 32),
+                          itemCount: _myFeedbacks.length,
+                          separatorBuilder: (_, __) => const SizedBox(height: 16),
+                          itemBuilder: (context, i) {
+                            final fb = _myFeedbacks[i];
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(18),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: mainBlue.withOpacity(0.06),
+                                    blurRadius: 16,
+                                    offset: const Offset(0, 6),
                                   ),
-                                ),
-                                const Spacer(),
-                                Text(
-                                  _formatDate(fb['date']),
-                                  style: const TextStyle(
-                                      color: Colors.grey, fontSize: 13),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              fb['text'],
-                              style: const TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w500),
-                            ),
-                          ],
+                                ],
+                              ),
+                              padding: const EdgeInsets.all(18),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        fb.status == 'Выполнено'
+                                            ? Icons.check_circle
+                                            : Icons.timelapse,
+                                        color: fb.status == 'Выполнено'
+                                            ? mainBlue
+                                            : Colors.orange,
+                                        size: 20,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        fb.status,
+                                        style: TextStyle(
+                                          color: fb.status == 'Выполнено'
+                                              ? mainBlue
+                                              : Colors.orange,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      Text(
+                                        _formatDate(fb.date),
+                                        style: const TextStyle(
+                                            color: Colors.grey, fontSize: 13),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    fb.text,
+                                    style: const TextStyle(
+                                        fontSize: 15, fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
+                      ),
           ),
         ],
       ),

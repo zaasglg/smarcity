@@ -151,32 +151,145 @@ class _FinanceTrackerPageState extends State<FinanceTrackerPage> {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 28, 20, 28),
         children: [
-          // Баланс
+          // Баланс - карта
           Container(
+            width: double.infinity,
+            height: 200,
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(22),
+              color: const Color(0xFFDB5B2B),
+              borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.deepPurple.withOpacity(0.07),
-                  blurRadius: 16,
-                  offset: const Offset(0, 6),
+                  color: const Color(0xFFDB5B2B).withOpacity(0.3),
+                  blurRadius: 20,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
               children: [
-                const Text('Баланс',
-                    style: TextStyle(color: Colors.grey, fontSize: 15)),
-                const SizedBox(height: 8),
-                Text(
-                  '${balance.toStringAsFixed(0)} ₸',
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 32,
-                      color: Color(0xFF1E3A8A)),
+                // Декоративные элементы
+                Positioned(
+                  right: -30,
+                  top: -30,
+                  child: Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  right: 20,
+                  bottom: -40,
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.05),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+                // Основной контент карты
+                Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Верхняя часть карты
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Smart City Card',
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.9),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'Personal',
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.7),
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Icon(
+                              HugeIcons.strokeRoundedCreditCard,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      // Баланс
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Текущий баланс',
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.8),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            '${balance.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} ₸',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.2,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      // Номер карты (декоративный)
+                      Row(
+                        children: [
+                          Text(
+                            '**** **** **** 2024',
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.7),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 2,
+                            ),
+                          ),
+                          const Spacer(),
+                          Text(
+                            'SMART',
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.6),
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -188,40 +301,76 @@ class _FinanceTrackerPageState extends State<FinanceTrackerPage> {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF1F6FF),
-                    borderRadius: BorderRadius.circular(18),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        const Color(0xFF43A047),
+                        const Color(0xFF66BB6A),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF43A047).withOpacity(0.3),
+                        blurRadius: 15,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
                   ),
-                  padding: const EdgeInsets.all(18),
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
-                      const Text('Доходы',
-                          style: TextStyle(
-                              color: Color(0xFF43A047),
-                              fontWeight: FontWeight.w600)),
-                      const SizedBox(height: 6),
-                      Text(
-                        '+${income.toStringAsFixed(0)} ₸',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: Color(0xFF43A047)),
-                      ),
-                      const SizedBox(height: 10),
-                      ElevatedButton.icon(
-                        onPressed: () => _addOperation(true),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF43A047),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 8),
-                          textStyle:
-                              const TextStyle(fontWeight: FontWeight.bold),
-                          elevation: 0,
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          shape: BoxShape.circle,
                         ),
-                        icon: const Icon(Icons.add, size: 18),
-                        label: const Text('Добавить'),
+                        child: const Icon(
+                          HugeIcons.strokeRoundedArrowUp01,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      const Text(
+                        'Доходы',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '+${income.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} ₸',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () => _addOperation(true),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: const Color(0xFF43A047),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            elevation: 0,
+                          ),
+                          icon: const Icon(Icons.add, size: 18),
+                          label: const Text(
+                            'Добавить',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -231,40 +380,76 @@ class _FinanceTrackerPageState extends State<FinanceTrackerPage> {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFFF3F6),
-                    borderRadius: BorderRadius.circular(18),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        const Color(0xFFE91E63),
+                        const Color(0xFFEC407A),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFFE91E63).withOpacity(0.3),
+                        blurRadius: 15,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
                   ),
-                  padding: const EdgeInsets.all(18),
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
-                      const Text('Расходы',
-                          style: TextStyle(
-                              color: Color(0xFFE91E63),
-                              fontWeight: FontWeight.w600)),
-                      const SizedBox(height: 6),
-                      Text(
-                        '-${expense.toStringAsFixed(0)} ₸',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: Color(0xFFE91E63)),
-                      ),
-                      const SizedBox(height: 10),
-                      ElevatedButton.icon(
-                        onPressed: () => _addOperation(false),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFE91E63),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 8),
-                          textStyle:
-                              const TextStyle(fontWeight: FontWeight.bold),
-                          elevation: 0,
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          shape: BoxShape.circle,
                         ),
-                        icon: const Icon(Icons.remove, size: 18),
-                        label: const Text('Добавить'),
+                        child: const Icon(
+                          HugeIcons.strokeRoundedArrowDown01,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      const Text(
+                        'Расходы',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '-${expense.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} ₸',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () => _addOperation(false),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: const Color(0xFFE91E63),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            elevation: 0,
+                          ),
+                          icon: const Icon(Icons.remove, size: 18),
+                          label: const Text(
+                            'Добавить',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -272,38 +457,94 @@ class _FinanceTrackerPageState extends State<FinanceTrackerPage> {
               ),
             ],
           ),
-          const SizedBox(height: 28),
+          const SizedBox(height: 32),
           // История операций
-          const Text('История операций',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
-          const SizedBox(height: 12),
-          ...history.take(6).map((op) => Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: Container(
+          Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(14),
-                    boxShadow: [
-                      BoxShadow(
-                        color: (op['color'] as Color).withOpacity(0.07),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
+                    color: const Color(0xFFDB5B2B).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  child: const Icon(
+                    HugeIcons.strokeRoundedClock01,
+                    color: Color(0xFFDB5B2B),
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                const Text(
+                  'История операций',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.black87,
+                  ),
+                ),
+                const Spacer(),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    '${history.length}',
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ...history.take(6).map((op) => Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: (op['color'] as Color).withOpacity(0.1),
+                    width: 1,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.04),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
                       Container(
+                        width: 48,
+                        height: 48,
                         decoration: BoxDecoration(
-                          color: (op['color'] as Color).withOpacity(0.13),
-                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              (op['color'] as Color),
+                              (op['color'] as Color).withOpacity(0.8),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(14),
                         ),
-                        padding: const EdgeInsets.all(10),
-                        child: Icon(op['icon'], color: op['color'], size: 22),
+                        child: Icon(
+                          op['icon'],
+                          color: Colors.white,
+                          size: 24,
+                        ),
                       ),
-                      const SizedBox(width: 14),
+                      const SizedBox(width: 16),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -311,54 +552,165 @@ class _FinanceTrackerPageState extends State<FinanceTrackerPage> {
                             Text(
                               op['category'],
                               style: const TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 15),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                                color: Colors.black87,
+                              ),
                             ),
-                            const SizedBox(height: 2),
-                            Text(
-                              _formatDate(op['date']),
-                              style: const TextStyle(
-                                  fontSize: 12, color: Colors.grey),
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: (op['color'] as Color).withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Text(
+                                    op['type'],
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600,
+                                      color: op['color'],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  _formatDate(op['date']),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey.shade500,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      Text(
-                        (op['type'] == 'Доход' ? '+' : '-') +
-                            op['amount'].toStringAsFixed(0) +
-                            ' ₸',
-                        style: TextStyle(
-                          color: op['type'] == 'Доход'
-                              ? const Color(0xFF43A047)
-                              : const Color(0xFFE91E63),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
+                      const SizedBox(width: 12),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            (op['type'] == 'Доход' ? '+' : '-') +
+                                op['amount'].toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ') +
+                                ' ₸',
+                            style: TextStyle(
+                              color: op['type'] == 'Доход'
+                                  ? const Color(0xFF43A047)
+                                  : const Color(0xFFE91E63),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Container(
+                            width: 4,
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: (op['color'] as Color),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
               )),
-          const SizedBox(height: 28),
+          const SizedBox(height: 24),
           // Совет по экономии
           Container(
             decoration: BoxDecoration(
-              color: const Color(0xFF1E3A8A),
-              borderRadius: BorderRadius.circular(18),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  const Color(0xFFDB5B2B),
+                  const Color(0xFFE8633D),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFDB5B2B).withOpacity(0.3),
+                  blurRadius: 20,
+                  offset: const Offset(0, 8),
+                ),
+              ],
             ),
-            padding: const EdgeInsets.all(18),
-            child: Row(
+            child: Stack(
               children: [
-                const Icon(Icons.lightbulb, color: Colors.white, size: 28),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Text(
-                    _getAdvice(),
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15,
-                        height: 1.4),
+                // Декоративные элементы
+                Positioned(
+                  right: -20,
+                  top: -20,
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: -10,
+                  bottom: -10,
+                  child: Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.05),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+                // Основной контент
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          HugeIcons.strokeRoundedIdea,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Совет дня',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              _getAdvice(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                                height: 1.4,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

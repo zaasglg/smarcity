@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:math' as math;
 
 class HealthTrackerPage extends StatefulWidget {
   const HealthTrackerPage({super.key});
@@ -9,14 +12,95 @@ class HealthTrackerPage extends StatefulWidget {
 }
 
 class _HealthTrackerPageState extends State<HealthTrackerPage> {
-  double sleepHours = 7.5;
+  SharedPreferences? _prefs;
+  DateTime _selectedDate = DateTime.now();
+  final Color mainColor = const Color(0xFFDB5B2B);
+
+  // Health metrics with persistence
+  double sleepHours = 0.0;
   final double sleepGoal = 8.0;
-  double water = 1.2;
+  double water = 0.0;
   final double waterGoal = 2.0;
-  int steps = 6500;
+  int steps = 0;
   final int stepsGoal = 10000;
-  int breath = 2;
+  int breath = 0;
   final int breathGoal = 3;
+
+  // Weekly statistics
+  List<double> weeklySleep = [];
+  List<double> weeklyWater = [];
+  List<int> weeklySteps = [];
+  List<int> weeklyBreath = [];
+
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeData();
+  }
+
+  Future<void> _initializeData() async {
+    _prefs = await SharedPreferences.getInstance();
+    await _loadData();
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _loadData() async {
+    if (_prefs == null) return;
+
+    final dateKey = DateFormat('yyyy-MM-dd').format(_selectedDate);
+
+    setState(() {
+      sleepHours = _prefs!.getDouble('sleep_$dateKey') ?? 0.0;
+      water = _prefs!.getDouble('water_$dateKey') ?? 0.0;
+      steps = _prefs!.getInt('steps_$dateKey') ?? 0;
+      breath = _prefs!.getInt('breath_$dateKey') ?? 0;
+
+      // Load weekly data
+      _loadWeeklyData();
+    });
+  }
+
+  void _loadWeeklyData() {
+    if (_prefs == null) return;
+
+    weeklySleep = [];
+    weeklyWater = [];
+    weeklySteps = [];
+    weeklyBreath = [];
+
+    for (int i = 6; i >= 0; i--) {
+      final date = _selectedDate.subtract(Duration(days: i));
+      final dateKey = DateFormat('yyyy-MM-dd').format(date);
+
+      weeklySleep.add(_prefs!.getDouble('sleep_$dateKey') ?? 0.0);
+      weeklyWater.add(_prefs!.getDouble('water_$dateKey') ?? 0.0);
+      weeklySteps.add(_prefs!.getInt('steps_$dateKey') ?? 0);
+      weeklyBreath.add(_prefs!.getInt('breath_$dateKey') ?? 0);
+    }
+  }
+
+  Future<void> _saveData() async {
+    if (_prefs == null) return;
+
+    final dateKey = DateFormat('yyyy-MM-dd').format(_selectedDate);
+    await _prefs!.setDouble('sleep_$dateKey', sleepHours);
+    await _prefs!.setDouble('water_$dateKey', water);
+    await _prefs!.setInt('steps_$dateKey', steps);
+    await _prefs!.setInt('breath_$dateKey', breath);
+  }
+
+  void _changeDate(int days) {
+    setState(() {
+      _selectedDate = _selectedDate.add(Duration(days: days));
+      _loadData();
+    });
+  }
 
   void _addSleep() async {
     final controller = TextEditingController();
@@ -26,7 +110,7 @@ class _HealthTrackerPageState extends State<HealthTrackerPage> {
         title: const Text('Добавить часы сна'),
         content: TextField(
           controller: controller,
-          keyboardType: TextInputType.numberWithOptions(decimal: true),
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
           decoration: const InputDecoration(hintText: 'Часы (например, 7.5)'),
         ),
         actions: [
@@ -48,12 +132,14 @@ class _HealthTrackerPageState extends State<HealthTrackerPage> {
     );
     if (result != null) {
       setState(() => sleepHours = result);
+      _saveData();
     }
   }
 
   void _addWater(double amount) {
     setState(() {
       water = (water + amount).clamp(0, waterGoal);
+      _saveData();
     });
   }
 
@@ -86,23 +172,39 @@ class _HealthTrackerPageState extends State<HealthTrackerPage> {
     );
     if (result != null) {
       setState(() => steps = (steps + result).clamp(0, stepsGoal));
+      _saveData();
     }
   }
 
   void _addBreath() {
     setState(() {
       if (breath < breathGoal) breath++;
+      _saveData();
     });
   }
 
   void _resetBreath() {
-    setState(() => breath = 0);
+    setState(() {
+      breath = 0;
+      _saveData();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: CircularProgressIndicator(
+            color: mainColor,
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FB),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -112,13 +214,30 @@ class _HealthTrackerPageState extends State<HealthTrackerPage> {
               color: Colors.black87),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Трекер здоровья',
-          style: TextStyle(
-            color: Colors.black87,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.chevron_left),
+              onPressed: () => _changeDate(-1),
+            ),
+            Text(
+              DateFormat('d MMMM').format(_selectedDate),
+              style: const TextStyle(
+                color: Colors.black87,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.chevron_right),
+              onPressed: () {
+                if (_selectedDate.isBefore(DateTime.now())) {
+                  _changeDate(1);
+                }
+              },
+            ),
+          ],
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
@@ -131,20 +250,29 @@ class _HealthTrackerPageState extends State<HealthTrackerPage> {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 28, 20, 28),
         children: [
+          // Weekly Statistics Card
+          _WeeklyStatsCard(
+            weeklySleep: weeklySleep,
+            weeklyWater: weeklyWater,
+            weeklySteps: weeklySteps,
+            weeklyBreath: weeklyBreath,
+            mainColor: mainColor,
+          ),
+          const SizedBox(height: 18),
           // Сон
           _HealthCard(
-            color: const Color(0xFF1E3A8A),
+            color: mainColor,
             icon: HugeIcons.strokeRoundedMoon,
             title: 'Сон',
             value:
                 '${sleepHours.toStringAsFixed(1)} ч / ${sleepGoal.toStringAsFixed(0)} ч',
             progress: sleepHours / sleepGoal,
-            progressColor: const Color(0xFF1E3A8A),
+            progressColor: mainColor,
             subtitle: 'Рекомендуется 7-9 часов сна',
             action: ElevatedButton(
               onPressed: _addSleep,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF1E3A8A),
+                backgroundColor: mainColor,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
@@ -159,13 +287,13 @@ class _HealthTrackerPageState extends State<HealthTrackerPage> {
           const SizedBox(height: 18),
           // Вода
           _HealthCard(
-            color: const Color(0xFF2196F3),
+            color: mainColor,
             icon: HugeIcons.strokeRoundedHome03,
             title: 'Вода',
             value:
                 '${water.toStringAsFixed(1)} л / ${waterGoal.toStringAsFixed(0)} л',
             progress: water / waterGoal,
-            progressColor: const Color(0xFF2196F3),
+            progressColor: mainColor,
             subtitle: 'Рекомендуется 2 литра в день',
             isCircle: true,
             action: Row(
@@ -173,7 +301,7 @@ class _HealthTrackerPageState extends State<HealthTrackerPage> {
                 ElevatedButton(
                   onPressed: () => _addWater(0.25),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2196F3),
+                    backgroundColor: mainColor,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
@@ -205,17 +333,17 @@ class _HealthTrackerPageState extends State<HealthTrackerPage> {
           const SizedBox(height: 18),
           // Шаги
           _HealthCard(
-            color: const Color(0xFF43A047),
+            color: mainColor,
             icon: HugeIcons.strokeRoundedUser,
             title: 'Шаги',
             value: '$steps / $stepsGoal',
             progress: steps / stepsGoal,
-            progressColor: const Color(0xFF43A047),
+            progressColor: mainColor,
             subtitle: 'Рекомендуется 10 000 шагов',
             action: ElevatedButton(
               onPressed: _addSteps,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF43A047),
+                backgroundColor: mainColor,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
@@ -230,19 +358,19 @@ class _HealthTrackerPageState extends State<HealthTrackerPage> {
           const SizedBox(height: 18),
           // Дыхательные практики
           _HealthCard(
-            color: const Color(0xFFE91E63),
+            color: mainColor,
             icon: HugeIcons.strokeRoundedNotification03,
             title: 'Дыхательные практики',
             value: '$breath / $breathGoal',
             progress: breath / breathGoal,
-            progressColor: const Color(0xFFE91E63),
+            progressColor: mainColor,
             subtitle: 'Рекомендуется 2-3 подхода в день',
             action: Row(
               children: [
                 ElevatedButton(
                   onPressed: _addBreath,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFE91E63),
+                    backgroundColor: mainColor,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
@@ -309,7 +437,7 @@ class _HealthCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.07),
+            color: color.withOpacity(0.05),
             blurRadius: 16,
             offset: const Offset(0, 6),
           ),
@@ -320,7 +448,7 @@ class _HealthCard extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: color.withOpacity(0.13),
+              color: color.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
             padding: const EdgeInsets.all(16),
@@ -425,4 +553,271 @@ class _CircleProgress extends StatelessWidget {
       ),
     );
   }
+}
+
+class _WeeklyStatsCard extends StatelessWidget {
+  final List<double> weeklySleep;
+  final List<double> weeklyWater;
+  final List<int> weeklySteps;
+  final List<int> weeklyBreath;
+  final Color mainColor;
+
+  const _WeeklyStatsCard({
+    required this.weeklySleep,
+    required this.weeklyWater,
+    required this.weeklySteps,
+    required this.weeklyBreath,
+    required this.mainColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: mainColor.withOpacity(0.05),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Статистика за неделю',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: mainColor,
+            ),
+          ),
+          const SizedBox(height: 24),
+          SizedBox(
+            height: 200,
+            child: CustomPaint(
+              painter: ChartPainter(
+                sleepData: weeklySleep,
+                waterData: weeklyWater,
+                mainColor: mainColor,
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Text('Пн', style: TextStyle(color: Colors.grey, fontSize: 12)),
+              Text('Вт', style: TextStyle(color: Colors.grey, fontSize: 12)),
+              Text('Ср', style: TextStyle(color: Colors.grey, fontSize: 12)),
+              Text('Чт', style: TextStyle(color: Colors.grey, fontSize: 12)),
+              Text('Пт', style: TextStyle(color: Colors.grey, fontSize: 12)),
+              Text('Сб', style: TextStyle(color: Colors.grey, fontSize: 12)),
+              Text('Вс', style: TextStyle(color: Colors.grey, fontSize: 12)),
+            ],
+          ),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildLegendItem('Сон', mainColor),
+              _buildLegendItem('Вода', mainColor.withOpacity(0.5)),
+            ],
+          ),
+          const SizedBox(height: 24),
+          // Steps and Breath stats
+          Row(
+            children: [
+              Expanded(
+                child: _buildStatBox(
+                  'Шаги',
+                  '${weeklySteps.reduce((a, b) => a + b) ~/ 7}',
+                  'среднее',
+                  mainColor,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: _buildStatBox(
+                  'Дыхание',
+                  '${weeklyBreath.reduce((a, b) => a + b) ~/ 7}',
+                  'среднее',
+                  mainColor,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLegendItem(String label, Color color) {
+    return Row(
+      children: [
+        Container(
+          width: 12,
+          height: 12,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          label,
+          style: TextStyle(
+            color: Colors.grey.shade700,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatBox(
+      String title, String value, String subtitle, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: color,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          Text(
+            subtitle,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey.shade600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ChartPainter extends CustomPainter {
+  final List<double> sleepData;
+  final List<double> waterData;
+  final Color mainColor;
+
+  ChartPainter({
+    required this.sleepData,
+    required this.waterData,
+    required this.mainColor,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3
+      ..strokeCap = StrokeCap.round;
+
+    final dotPaint = Paint()
+      ..style = PaintingStyle.fill
+      ..strokeWidth = 2;
+
+    final areaPaint = Paint()..style = PaintingStyle.fill;
+
+    // Draw grid lines
+    final gridPaint = Paint()
+      ..color = Colors.grey.shade200
+      ..strokeWidth = 1;
+
+    for (int i = 0; i <= 4; i++) {
+      final y = size.height * (1 - i / 4);
+      canvas.drawLine(
+        Offset(0, y),
+        Offset(size.width, y),
+        gridPaint,
+      );
+    }
+
+    // Draw sleep data
+    paint.color = mainColor;
+    areaPaint.color = mainColor.withOpacity(0.1);
+    _drawLine(canvas, size, sleepData, paint, dotPaint, areaPaint);
+
+    // Draw water data
+    paint.color = mainColor.withOpacity(0.5);
+    areaPaint.color = mainColor.withOpacity(0.05);
+    _drawLine(canvas, size, waterData.map((e) => e * 2).toList(), paint,
+        dotPaint, areaPaint);
+  }
+
+  void _drawLine(
+    Canvas canvas,
+    Size size,
+    List<double> data,
+    Paint paint,
+    Paint dotPaint,
+    Paint areaPaint,
+  ) {
+    if (data.isEmpty) return;
+
+    final path = Path();
+    final areaPath = Path();
+    final maxValue = data.reduce(math.max);
+    final minValue = data.reduce(math.min);
+    final range = maxValue - minValue;
+    final scale = range > 0 ? size.height * 0.8 / range : 1.0;
+
+    for (int i = 0; i < data.length; i++) {
+      final x = size.width * i / (data.length - 1);
+      final y = size.height * 0.9 - (data[i] - minValue) * scale;
+
+      if (i == 0) {
+        path.moveTo(x, y);
+        areaPath.moveTo(x, size.height * 0.9);
+        areaPath.lineTo(x, y);
+      } else {
+        path.lineTo(x, y);
+        areaPath.lineTo(x, y);
+      }
+
+      // Draw dot
+      dotPaint.color = paint.color;
+      canvas.drawCircle(Offset(x, y), 4, dotPaint);
+      canvas.drawCircle(Offset(x, y), 6, Paint()..color = Colors.white);
+      canvas.drawCircle(Offset(x, y), 4, dotPaint);
+    }
+
+    // Close area path
+    areaPath.lineTo(size.width, size.height * 0.9);
+    areaPath.close();
+
+    // Draw area
+    canvas.drawPath(areaPath, areaPaint);
+    // Draw line
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }

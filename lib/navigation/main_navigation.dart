@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:smartcity/pages/ai_assistant_page.dart';
-import 'package:smartcity/pages/chat_page.dart';
 import 'package:smartcity/pages/home_page.dart';
 import 'package:smartcity/pages/news_page.dart';
+import 'package:smartcity/pages/notifications_page.dart';
 import 'package:smartcity/pages/profile_page.dart';
 
 class MainNavigationPage extends StatefulWidget {
@@ -20,7 +20,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
     HomePage(),
     NewsPage(),
     AIAssistantPage(),
-    ChatPage(),
+    NotificationsPage(),
     ProfilePage(),
   ];
 
@@ -63,17 +63,9 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
             BottomNavigationBarItem(
               icon: Container(
                 padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1E3A8A), // Dark blue color
+                decoration: const BoxDecoration(
+                  color: Color(0xFFDB5B2B), // Main orange color
                   shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.blue.withOpacity(0.3),
-                      spreadRadius: 1,
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
                 ),
                 child: const Icon(
                   HugeIcons.strokeRoundedRobot01,
@@ -84,8 +76,8 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
               label: 'AI Помощник',
             ),
             const BottomNavigationBarItem(
-              icon: Icon(HugeIcons.strokeRoundedBubbleChat),
-              label: 'Чат',
+              icon: Icon(HugeIcons.strokeRoundedNotification03),
+              label: 'Уведемление',
             ),
             const BottomNavigationBarItem(
               icon: Icon(HugeIcons.strokeRoundedUser),

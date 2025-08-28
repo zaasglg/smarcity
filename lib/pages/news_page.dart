@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'news_detail_page.dart';
 
 class NewsPage extends StatelessWidget {
   const NewsPage({super.key});
@@ -119,7 +120,7 @@ class NewsTab extends StatelessWidget {
       children: const [
         NewsCard(
           avatarUrl: 'assets/icons/guest.png',
-          userName: 'Мадина',
+          userName: 'Мади��а',
           timeAgo: '3 минуты назад',
           text:
               'Извините, у нас в Плерете всю ночь отключали электричество, что происходит?',
@@ -161,134 +162,150 @@ class NewsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      color: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  backgroundImage: AssetImage(avatarUrl),
-                  radius: 18,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        userName,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        timeAgo,
-                        style: TextStyle(
-                          color: Colors.grey.shade500,
-                          fontSize: 11,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.more_horiz, size: 20),
-                  onPressed: () {},
-                ),
-              ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NewsDetailPage(
+              avatarUrl: avatarUrl,
+              userName: userName,
+              timeAgo: timeAgo,
+              text: text,
+              imageUrls: imageUrls,
             ),
           ),
-          if (imageUrls.isNotEmpty)
-            SizedBox(
-              height: 300,
-              child: PageView.builder(
-                itemCount: imageUrls.length,
-                itemBuilder: (context, index) {
-                  return Image.network(
-                    imageUrls[index],
-                    fit: BoxFit.cover,
-                  );
-                },
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: AssetImage(avatarUrl),
+                    radius: 18,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          userName,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                        Text(
+                          timeAgo,
+                          style: TextStyle(
+                            color: Colors.grey.shade500,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.more_horiz, size: 20),
+                    onPressed: () {},
+                  ),
+                ],
               ),
             ),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(
-                        CupertinoIcons.heart,
-                        size: 28,
-                      ),
-                      onPressed: () {},
-                    ),
-                    IconButton(
-                      icon: const Icon(
-                        HugeIcons.strokeRoundedComment02,
-                        size: 24,
-                      ),
-                      onPressed: () {},
-                    ),
-                    IconButton(
-                      icon: const Icon(
-                        HugeIcons.strokeRoundedShare03,
-                        size: 24,
-                      ),
-                      onPressed: () {},
-                    ),
-                    const Spacer(),
-                    IconButton(
-                      icon: const Icon(Icons.bookmark_border, size: 24),
-                      onPressed: () {},
-                    ),
-                  ],
+            if (imageUrls.isNotEmpty)
+              SizedBox(
+                height: 300,
+                child: PageView.builder(
+                  itemCount: imageUrls.length,
+                  itemBuilder: (context, index) {
+                    return Image.network(
+                      imageUrls[index],
+                      fit: BoxFit.cover,
+                    );
+                  },
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  '2 отметок "Нравится"',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: Colors.grey.shade800,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                      color: Colors.grey.shade800,
-                      fontSize: 14,
-                    ),
+              ),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      TextSpan(
-                        text: '$userName ',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      IconButton(
+                        icon: const Icon(
+                          CupertinoIcons.heart,
+                          size: 28,
+                        ),
+                        onPressed: () {},
                       ),
-                      TextSpan(text: text),
+                      IconButton(
+                        icon: const Icon(
+                          HugeIcons.strokeRoundedComment02,
+                          size: 24,
+                        ),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          HugeIcons.strokeRoundedShare03,
+                          size: 24,
+                        ),
+                        onPressed: () {},
+                      ),
+                      const Spacer(),
+                      IconButton(
+                        icon: const Icon(Icons.bookmark_border, size: 24),
+                        onPressed: () {},
+                      ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Посмотреть все 0 комментариев',
-                  style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontSize: 13,
+                  const SizedBox(height: 4),
+                  Text(
+                    '2 отметок "Нравится"',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: Colors.grey.shade800,
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 4),
+                  RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        color: Colors.grey.shade800,
+                        fontSize: 14,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: '$userName ',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(text: text),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Посмотреть все 0 комментариев',
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -324,7 +341,6 @@ class _StoriesBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final stories = [
-      {'name': 'You', 'isAdd': true},
       {
         'name': 'Kristin',
         'avatar': 'https://randomuser.me/api/portraits/women/2.jpg',
@@ -393,21 +409,12 @@ class _StoriesBar extends StatelessWidget {
             final i = entry.key;
             final story = entry.value;
             Widget avatarWidget;
-            if (story['isAdd'] == true) {
-              avatarWidget = Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF23232B),
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: const Center(
-                  child: Icon(Icons.add, color: Colors.white, size: 36),
-                ),
-              );
-            } else {
-              avatarWidget = GestureDetector(
-                onTap: () {
+            
+            // Removed the plus button logic - now only shows regular story avatars
+            avatarWidget = GestureDetector(
+              onTap: () {
+                // Only show story viewer if the story has actual stories
+                if (story['stories'] != null) {
                   showDialog(
                     context: context,
                     barrierColor: Colors.black.withOpacity(0.95),
@@ -415,30 +422,33 @@ class _StoriesBar extends StatelessWidget {
                       user: story,
                     ),
                   );
-                },
-                child: Container(
-                  width: 80,
-                  height: 80,
-                  padding: const EdgeInsets.all(3),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    border: Border.all(
-                      color: const Color(0xFFE95A7B),
-                      width: 4,
-                    ),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.network(
-                      story['avatar'] as String,
-                      fit: BoxFit.cover,
-                      width: 74,
-                      height: 74,
-                    ),
+                }
+              },
+              child: Container(
+                width: 80,
+                height: 80,
+                padding: const EdgeInsets.all(3),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                  border: Border.all(
+                    color: story['stories'] != null 
+                        ? const Color(0xFFE95A7B) 
+                        : Colors.grey.shade300,
+                    width: 4,
                   ),
                 ),
-              );
-            }
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.network(
+                    story['avatar'] as String,
+                    fit: BoxFit.cover,
+                    width: 74,
+                    height: 74,
+                  ),
+                ),
+              ),
+            );
+            
             return Padding(
               padding: const EdgeInsets.only(right: 16),
               child: Column(

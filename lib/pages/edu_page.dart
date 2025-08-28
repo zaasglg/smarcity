@@ -53,37 +53,46 @@ class _EduPageState extends State<EduPage> {
     Course(
       id: '1',
       title: 'Суды үнемді пайдалану',
-      description: 'Үй тұрмысында және күнделікті өмірде су ресурстарын үнемді пайдалану жолдары.',
+      description:
+          'Үй тұрмысында және күнделікті өмірде су ресурстарын үнемді пайдалану жолдары.',
       imageUrl: 'assets/images/water_saving.jpg',
       category: 'Тұрмыс',
       lessons: [
         CourseLesson(
           title: 'Суды үнемдеудің маңыздылығы',
-          content: 'Су - өмірдің қайнар көзі. Жер бетіндегі таза су қорының шектеулі екені белгілі. Сондықтан, суды үнемді пайдалану - әрбір адамның міндеті. Бұл бөлімде суды үнемдеудің экологиялық және экономикалық маңыздылығын қарастырамыз.',
+          content:
+              'Су - өмірдің қайнар көзі. Жер бетіндегі таза су қорының шектеулі екені белгілі. Сондықтан, суды үнемді пайдалану - әрбір адамның міндеті. Бұл бөлімде суды үнемдеудің экологиялық және экономикалық маңыздылығын қарастырамыз.',
           images: ['assets/images/water_importance.jpg'],
         ),
         CourseLesson(
           title: 'Үйдегі су үнемдеу әдістері',
-          content: 'Үй тұрмысында суды үнемдеудің бірнеше жолдары бар: су шүмегін дұрыс пайдалану, су жіберетін құбырларды тексеру, суды қайта қолдану және т.б.',
-          images: ['assets/images/water_home_tips.jpg', 'assets/images/water_reuse.jpg'],
+          content:
+              'Үй тұрмысында суды үнемдеудің бірнеше жолдары бар: су шүмегін дұрыс пайдалану, су жіберетін құбырларды тексеру, суды қайта қолдану және т.б.',
+          images: [
+            'assets/images/water_home_tips.jpg',
+            'assets/images/water_reuse.jpg'
+          ],
         ),
       ],
     ),
     Course(
       id: '2',
       title: 'Шағын бизнес ашу және дамыту',
-      description: 'Шағын бизнесті бастау, жоспарлау және табысты дамытудың негізгі қадамдары.',
+      description:
+          'Шағын бизнесті бастау, жоспарлау және табысты дамытудың негізгі қадамдары.',
       imageUrl: 'assets/images/small_business.jpg',
       category: 'Бизнес',
       lessons: [
         CourseLesson(
           title: 'Бизнес идеясын таңдау',
-          content: 'Табысты бизнес ашу үшін алдымен идея қажет. Бұл бөлімде идеяны қалай таңдау керектігін және оның нарықтағы потенциалын қалай бағалау керектігін үйренесіз.',
+          content:
+              'Табысты бизнес ашу үшін алдымен идея қажет. Бұл бөлімде идеяны қалай таңдау керектігін және оның нарықтағы потенциалын қалай бағалау керектігін үйренесіз.',
           images: ['assets/images/business_idea.jpg'],
         ),
         CourseLesson(
           title: 'Бизнес-жоспар құру',
-          content: 'Бизнес-жоспар - кез келген бизнестің негізі. Жақсы жоспар бизнесіңіздің мақсаттарын, стратегиясын және қаржылық болжамдарын анықтайды.',
+          content:
+              'Бизнес-жоспар - кез келген бизнестің негізі. Жақсы жоспар бизнесіңіздің мақсаттарын, стратегиясын және қаржылық болжамдарын анықтайды.',
           images: ['assets/images/business_plan.jpg'],
         ),
       ],
@@ -91,57 +100,75 @@ class _EduPageState extends State<EduPage> {
     Course(
       id: '3',
       title: 'Дұрыс тамақтану',
-      description: 'Денсаулықты сақтау үшін дұрыс тамақтану негіздері және дәрумендер маңызы.',
+      description:
+          'Денсаулықты сақтау үшін дұрыс тамақтану негіздері және дәрумендер маңызы.',
       imageUrl: 'assets/images/healthy_eating.jpg',
       category: 'Денсаулық',
       lessons: [
         CourseLesson(
           title: 'Теңгерімді тамақтану принциптері',
-          content: 'Денсаулықты сақтау үшін теңгерімді тамақтану өте маңызды. Бұл бөлімде дұрыс тамақтанудың негізгі қағидаларын үйренесіз: ақуыздар, майлар және көмірсулар арасындағы теңгерім, дәрумендер мен минералдардың маңызы.',
+          content:
+              'Денсаулықты сақтау үшін теңгерімді тамақтану өте маңызды. Бұл бөлімде дұрыс тамақтанудың негізгі қағидаларын үйренесіз: ақуыздар, майлар және көмірсулар арасындағы теңгерім, дәрумендер мен минералдардың маңызы.',
           images: ['assets/images/balanced_diet.jpg'],
         ),
         CourseLesson(
           title: 'Пайдалы тағамдар тізімі',
-          content: 'Күнделікті рационыңызға қосуға пайдалы тағамдар: жемістер, көкөністер, жаңғақтар, толық дәнді өнімдер және т.б.',
-          images: ['assets/images/healthy_foods.jpg', 'assets/images/fruits_vegetables.jpg'],
+          content:
+              'Күнделікті рационыңызға қосуға пайдалы тағамдар: жемістер, көкөністер, жаңғақтар, толық дәнді өнімдер және т.б.',
+          images: [
+            'assets/images/healthy_foods.jpg',
+            'assets/images/fruits_vegetables.jpg'
+          ],
         ),
       ],
     ),
     Course(
       id: '4',
       title: 'Алғашқы көмек көрсету',
-      description: 'Төтенше жағдайларда алғашқы көмек көрсету бойынша нұсқаулар мен тәжірибелер.',
+      description:
+          'Төтенше жағдайларда алғашқы көмек көрсету бойынша нұсқаулар мен тәжірибелер.',
       imageUrl: 'assets/images/first_aid.jpg',
       category: 'Денсаулық',
       lessons: [
         CourseLesson(
           title: 'Алғашқы көмектің негізгі принциптері',
-          content: 'Алғашқы көмек көрсетудің негізгі қадамдары: қауіпсіздікті қамтамасыз ету, көмек шақыру және зардап шеккен адамға көмектесу.',
+          content:
+              'Алғашқы көмек көрсетудің негізгі қадамдары: қауіпсіздікті қамтамасыз ету, көмек шақыру және зардап шеккен адамға көмектесу.',
           images: ['assets/images/first_aid_basics.jpg'],
         ),
         CourseLesson(
           title: 'ЖүрекУөкпе реанимациясы (ЖӨР)',
-          content: 'ЖӨР жүргізу қадамдары: қол орналастыру, қысым күші және жиілігі, дем беру техникасы.',
-          images: ['assets/images/cpr_technique.jpg', 'assets/images/cpr_steps.jpg'],
+          content:
+              'ЖӨР жүргізу қадамдары: қол орналастыру, қысым күші және жиілігі, дем беру техникасы.',
+          images: [
+            'assets/images/cpr_technique.jpg',
+            'assets/images/cpr_steps.jpg'
+          ],
         ),
       ],
     ),
     Course(
       id: '5',
       title: 'Интернет алаяқтығынан қорғану',
-      description: 'Онлайн қауіпсіздік және интернеттегі алаяқтықтан қорғану әдістері.',
+      description:
+          'Онлайн қауіпсіздік және интернеттегі алаяқтықтан қорғану әдістері.',
       imageUrl: 'assets/images/internet_security.jpg',
       category: 'Қауіпсіздік',
       lessons: [
         CourseLesson(
           title: 'Интернет алаяқтық түрлері',
-          content: 'Фишинг, құпия сөздерді ұрлау, жалған сайттар, әлеуметтік инженерия және басқа да интернет алаяқтық түрлерін үйреніңіз.',
+          content:
+              'Фишинг, құпия сөздерді ұрлау, жалған сайттар, әлеуметтік инженерия және басқа да интернет алаяқтық түрлерін үйреніңіз.',
           images: ['assets/images/phishing.jpg'],
         ),
         CourseLesson(
           title: 'Қорғану шаралары',
-          content: 'Күрделі құпия сөздерді қолдану, екі факторлы аутентификация, сенімді антивирустарды пайдалану және күмәнді хабарламаларға жауап бермеу сияқты қорғану шаралары.',
-          images: ['assets/images/security_measures.jpg', 'assets/images/two_factor.jpg'],
+          content:
+              'Күрделі құпия сөздерді қолдану, екі факторлы аутентификация, сенімді антивирустарды пайдалану және күмәнді хабарламаларға жауап бермеу сияқты қорғану шаралары.',
+          images: [
+            'assets/images/security_measures.jpg',
+            'assets/images/two_factor.jpg'
+          ],
         ),
       ],
     ),
@@ -152,15 +179,20 @@ class _EduPageState extends State<EduPage> {
 
     // Категория бойынша фильтрация
     if (_selectedCategory != 'Барлығы') {
-      filtered = filtered.where((course) => course.category == _selectedCategory).toList();
+      filtered = filtered
+          .where((course) => course.category == _selectedCategory)
+          .toList();
     }
 
     // Іздеу сұранысы бойынша фильтрация
     if (_searchQuery.isNotEmpty) {
-      filtered = filtered.where((course) =>
-      course.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-          course.description.toLowerCase().contains(_searchQuery.toLowerCase())
-      ).toList();
+      filtered = filtered
+          .where((course) =>
+              course.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+              course.description
+                  .toLowerCase()
+                  .contains(_searchQuery.toLowerCase()))
+          .toList();
     }
 
     return filtered;
@@ -169,8 +201,16 @@ class _EduPageState extends State<EduPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        title: const Text('Оқыту орталығы', style: TextStyle(color: Colors.white)),
+        title: Text(
+          'Оқыту орталығы'.toUpperCase(),
+          style: const TextStyle(
+            color: Colors.black87,
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
         elevation: 0,
       ),
@@ -190,17 +230,11 @@ class _EduPageState extends State<EduPage> {
 
   Widget _buildSearchBar() {
     return Container(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.fromLTRB(16, 16, 16, 8),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey[200]!),
       ),
       child: TextField(
         onChanged: (value) {
@@ -210,9 +244,12 @@ class _EduPageState extends State<EduPage> {
         },
         decoration: InputDecoration(
           hintText: 'Курс іздеу...',
-          prefixIcon: const Icon(Icons.search, color: Colors.teal),
+          hintStyle: TextStyle(color: Colors.grey[400]),
+          prefixIcon:
+              Icon(Icons.search, color: const Color(0xFFDB5B2B), size: 20),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         ),
       ),
     );
@@ -220,8 +257,8 @@ class _EduPageState extends State<EduPage> {
 
   Widget _buildCategoryFilter() {
     return Container(
-      height: 48,
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      height: 30,
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: _categories.length,
@@ -236,26 +273,23 @@ class _EduPageState extends State<EduPage> {
               });
             },
             child: Container(
-              margin: const EdgeInsets.only(right: 12),
+              margin: const EdgeInsets.only(right: 8),
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
-                color: isSelected ? Colors.teal : Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  if (!isSelected)
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
-                ],
+                color: isSelected ? const Color(0xFFDB5B2B) : Colors.white,
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(
+                    color: isSelected
+                        ? const Color(0xFFDB5B2B)
+                        : Colors.grey[200]!),
               ),
               alignment: Alignment.center,
               child: Text(
-                category,
+                category.toUpperCase(),
                 style: TextStyle(
                   color: isSelected ? Colors.white : Colors.black87,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  fontSize: 13,
+                  fontWeight: FontWeight.normal,
                 ),
               ),
             ),
@@ -267,7 +301,7 @@ class _EduPageState extends State<EduPage> {
 
   Widget _buildCoursesList() {
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       itemCount: _filteredCourses.length,
       itemBuilder: (context, index) {
         final course = _filteredCourses[index];
@@ -291,13 +325,13 @@ class _EduPageState extends State<EduPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.search_off, size: 80, color: Colors.grey[400]),
+          Icon(Icons.search_off, size: 64, color: Colors.grey[300]),
           const SizedBox(height: 16),
           Text(
             'Курстар табылмады',
             style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
               color: Colors.grey[600],
             ),
           ),
@@ -305,7 +339,8 @@ class _EduPageState extends State<EduPage> {
           Text(
             'Басқа сұранысты іздеп көріңіз',
             style: TextStyle(
-              color: Colors.grey[600],
+              color: Colors.grey[500],
+              fontSize: 14,
             ),
           ),
         ],
@@ -329,34 +364,29 @@ class CourseCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
+        margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.15),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey[100]!),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(12)),
               child: AspectRatio(
                 aspectRatio: 16 / 9,
                 child: Image.asset(
                   course.imageUrl,
                   fit: BoxFit.cover,
-                  // Егер сурет табылмаса, сұр фон көрсетіледі
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
-                      color: Colors.grey[300],
+                      color: Colors.grey[100],
                       child: Center(
-                        child: Icon(Icons.image, color: Colors.grey[600], size: 48),
+                        child: Icon(Icons.image,
+                            color: Colors.grey[400], size: 32),
                       ),
                     );
                   },
@@ -371,15 +401,16 @@ class CourseCard extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: Colors.teal.withOpacity(0.1),
+                          color: const Color(0xFFDB5B2B).withOpacity(0.1),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
                           course.category,
                           style: const TextStyle(
-                            color: Colors.teal,
+                            color: Color(0xFFDB5B2B),
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
@@ -389,26 +420,27 @@ class CourseCard extends StatelessWidget {
                       Text(
                         '${course.lessons.length} сабақ',
                         style: TextStyle(
-                          color: Colors.grey[600],
+                          color: Colors.grey[500],
                           fontSize: 12,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                   Text(
                     course.title,
                     style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     course.description,
                     style: TextStyle(
-                      color: Colors.grey[700],
+                      color: Colors.grey[600],
                       fontSize: 14,
+                      height: 1.4,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -434,26 +466,21 @@ class CourseDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             expandedHeight: 200,
             pinned: true,
+            backgroundColor: Colors.white,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 course.title,
                 textAlign: TextAlign.left,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: Colors.black87,
                   fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 8,
-                      color: Colors.black45,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               background: Stack(
@@ -464,9 +491,10 @@ class CourseDetailScreen extends StatelessWidget {
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
-                        color: Colors.grey[300],
+                        color: Colors.grey[100],
                         child: Center(
-                          child: Icon(Icons.image, color: Colors.grey[600], size: 48),
+                          child: Icon(Icons.image,
+                              color: Colors.grey[400], size: 32),
                         ),
                       );
                     },
@@ -478,7 +506,7 @@ class CourseDetailScreen extends StatelessWidget {
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          Colors.black.withOpacity(0.7),
+                          Colors.black.withOpacity(0.5),
                         ],
                         stops: const [0.6, 1.0],
                       ),
@@ -497,15 +525,16 @@ class CourseDetailScreen extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
-                          color: Colors.teal.withOpacity(0.1),
+                          color: Colors.grey[100],
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
                           course.category,
-                          style: const TextStyle(
-                            color: Colors.teal,
+                          style: TextStyle(
+                            color: Colors.grey[700],
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -513,36 +542,45 @@ class CourseDetailScreen extends StatelessWidget {
                       const SizedBox(width: 12),
                       Row(
                         children: [
-                          const Icon(Icons.book, size: 18, color: Colors.grey),
+                          Icon(Icons.book, size: 16, color: Colors.grey[500]),
                           const SizedBox(width: 4),
                           Text(
                             '${course.lessons.length} сабақ',
                             style: TextStyle(
-                              color: Colors.grey[700],
+                              color: Colors.grey[600],
+                              fontSize: 14,
                             ),
                           ),
                         ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
                   Text(
                     'Курс жайлы',
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey[800],
+                    ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                   Text(
                     course.description,
                     style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[800],
+                      fontSize: 15,
+                      color: Colors.grey[700],
                       height: 1.5,
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 32),
                   Text(
                     'Сабақтар',
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey[800],
+                    ),
                   ),
                   const SizedBox(height: 16),
                 ],
@@ -551,7 +589,7 @@ class CourseDetailScreen extends StatelessWidget {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-                  (context, index) {
+              (context, index) {
                 final lesson = course.lessons[index];
                 return LessonCard(
                   lesson: lesson,
@@ -596,40 +634,35 @@ class LessonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 5,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey[100]!),
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
               children: [
                 Container(
-                  width: 32,
-                  height: 32,
+                  width: 28,
+                  height: 28,
                   decoration: BoxDecoration(
-                    color: Colors.teal,
+                    color: const Color(0xFFDB5B2B).withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
                   alignment: Alignment.center,
                   child: Text(
                     '${index + 1}',
                     style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                      color: Color(0xFFDB5B2B),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 13,
                     ),
                   ),
                 ),
@@ -638,15 +671,15 @@ class LessonCard extends StatelessWidget {
                   child: Text(
                     lesson.title,
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
-                const Icon(
+                Icon(
                   Icons.arrow_forward_ios,
-                  size: 16,
-                  color: Colors.grey,
+                  size: 14,
+                  color: Colors.grey[400],
                 ),
               ],
             ),
@@ -670,9 +703,12 @@ class LessonDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
         title: Text(courseTitle),
         elevation: 0,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black87,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -682,19 +718,19 @@ class LessonDetailScreen extends StatelessWidget {
             Text(
               lesson.title,
               style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+                fontSize: 22,
+                fontWeight: FontWeight.w600,
               ),
             ),
             const SizedBox(height: 24),
-            if (lesson.images.isNotEmpty)
-              _buildImageCarousel(context),
+            if (lesson.images.isNotEmpty) _buildImageCarousel(context),
             const SizedBox(height: 24),
             Text(
               lesson.content,
-              style: const TextStyle(
-                fontSize: 16,
+              style: TextStyle(
+                fontSize: 15,
                 height: 1.6,
+                color: Colors.grey[800],
               ),
             ),
             const SizedBox(height: 32),
@@ -709,7 +745,7 @@ class LessonDetailScreen extends StatelessWidget {
       children: [
         if (lesson.images.length == 1)
           ClipRRect(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(8),
             child: Image.asset(
               lesson.images.first,
               fit: BoxFit.cover,
@@ -718,9 +754,9 @@ class LessonDetailScreen extends StatelessWidget {
               errorBuilder: (context, error, stackTrace) {
                 return Container(
                   height: 200,
-                  color: Colors.grey[300],
+                  color: Colors.grey[100],
                   child: Center(
-                    child: Icon(Icons.image, color: Colors.grey[600], size: 48),
+                    child: Icon(Icons.image, color: Colors.grey[400], size: 32),
                   ),
                 );
               },
@@ -735,15 +771,16 @@ class LessonDetailScreen extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(8),
                     child: Image.asset(
                       lesson.images[index],
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Container(
-                          color: Colors.grey[300],
+                          color: Colors.grey[100],
                           child: Center(
-                            child: Icon(Icons.image, color: Colors.grey[600], size: 48),
+                            child: Icon(Icons.image,
+                                color: Colors.grey[400], size: 32),
                           ),
                         );
                       },
